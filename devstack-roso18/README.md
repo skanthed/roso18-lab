@@ -1,1 +1,1 @@
-# DevStack Lab for RO(S)O 18
+# DevStack Lab for ROSO 18
