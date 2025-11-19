@@ -1,0 +1,20 @@
+apiVersion: v1
+kind: Node
+metadata:
+  name: host-192-168-60-143
+  labels:
+    lvm: enabled-sdb
+---
+apiVersion: v1
+kind: Node
+metadata:
+  name: host-192-168-60-180
+  labels:
+    lvm: enabled-sdb
+---
+apiVersion: v1
+kind: Node
+metadata:
+  name: host-192-168-60-193
+  labels:
+    lvm: enabled-sda
