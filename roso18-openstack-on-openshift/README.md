@@ -51,6 +51,7 @@ openstack esi trunk create --native-network ctrlplane-network nncp-trunk-1
 openstack esi trunk add network --tagged-networks internalapi nncp-trunk-1
 openstack esi trunk add network --tagged-networks ironic nncp-trunk-1
 openstack esi trunk add network --tagged-networks tenant nncp-trunk-1
+openstack esi trunk add network --tagged-networks moc-obm-mgmt nncp-trunk-1
 
 # Attach trunk to nodes
 openstack esi node network attach --trunk nncp-trunk-1 <node1>
@@ -96,6 +97,11 @@ oc describe secret osp-secret -n openstack
 #### 5. Node Network Config Policies (NNCP)
 
 ```bash
+
+Add DHCP Shim for OBM VLAN Access
+
+To allow the OBM VLAN interface (`moc-obm-mgmt`) to receive an IP via DHCP, add the following `additionalNetworks` configuration to the cluster network operator: See control-plane/networking/dhcp-shim-additional-network.yaml for reference.
+
 # For each worker node
 oc get nodes -l node-role.kubernetes.io/worker -o jsonpath="{.items[*].metadata.name}"
 

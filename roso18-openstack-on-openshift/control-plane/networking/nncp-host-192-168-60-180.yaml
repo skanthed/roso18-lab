@@ -71,6 +71,21 @@ spec:
         state: up
         type: ethernet
 
+      - description: OBM vlan interface for moc-obm-mgmt
+        ipv4:
+          enabled: true
+          dhcp: true
+        ipv6:
+          enabled: false
+        mtu: 1500
+        name: obm
+        state: up
+        type: vlan
+        vlan:
+          base-iface: enp7s0f1np1
+          id: "911"
+          reorder-headers: true
+
   nodeSelector:
     kubernetes.io/hostname: host-192-168-60-180
     node-role.kubernetes.io/worker: ""

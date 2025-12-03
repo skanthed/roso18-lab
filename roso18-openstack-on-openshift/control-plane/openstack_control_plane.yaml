@@ -85,7 +85,7 @@ spec:
         report_interval = 300
 
         [ml2_type_vlan]
-        network_vlan_ranges = ironic:450:550
+        network_vlan_ranges = ironic:1100:1110
 
         [ml2]
         type_drivers = geneve,vxlan,vlan,flat,local
@@ -120,6 +120,7 @@ spec:
               type: LoadBalancer
       networkAttachments:
         - internalapi
+        - moc-obm-mgmt
 
   # OVN backend
   ovn:
@@ -147,7 +148,7 @@ spec:
       memcached:
         replicas: 1
   
-  #DO we need this?? 
+  
   # MariaDB Galera clusters (control plane)
   galera:
     templates:
@@ -182,6 +183,12 @@ spec:
         customServiceConfig: |  
           [DEFAULT]
           default_network_interface = neutron
+
+          [neutron]
+          cleaning_network = <ironic_network_uuid>
+          provisioning_network = <ironic_network_uuid>
+          inspection_network = <ironic_network_uuid>
+          rescuing_network = <ironic_network_uuid>
         override:
           service:
             internal:
@@ -194,9 +201,19 @@ spec:
                 type: LoadBalancer
       ironicConductors:
         - replicas: 1
+          customServiceConfig: |  
+            [DEFAULT]
+            default_network_interface = neutron
+
+            [neutron]
+            cleaning_network = <ironic_network_uuid>
+            provisioning_network = <ironic_network_uuid>
+            inspection_network = <ironic_network_uuid>
+            rescuing_network = <ironic_network_uuid>
           storageRequest: 10G
           networkAttachments:
             - ironic
+            - moc-obm-mgmt
           provisionNetwork: ironic
       ironicInspector:
         replicas: 0
