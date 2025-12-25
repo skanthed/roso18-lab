@@ -85,7 +85,7 @@ spec:
         report_interval = 300
 
         [ml2_type_vlan]
-        network_vlan_ranges = ironic:1100:1110
+        network_vlan_ranges = bmnet:1100:1110,bmnet:596:596
 
         [ml2]
         type_drivers = geneve,vxlan,vlan,flat,local
@@ -128,7 +128,7 @@ spec:
       ovnController:
         networkAttachment: tenant
         nicMappings:
-          ironic: enp7s0f1np1
+          ironic: ospbr
       ovnDBCluster:
         ovndbcluster-nb:
           replicas: 1

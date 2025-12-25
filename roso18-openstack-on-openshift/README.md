@@ -64,10 +64,6 @@ openstack esi node network attach --trunk nncp-trunk-3 <node3>
 #### 3. Apply Required Operator Manifests
 
 ```bash
-oc new-project openstack
-oc label ns openstack security.openshift.io/scc.podSecurityLabelSync=false --overwrite
-oc label ns openstack pod-security.kubernetes.io/enforce=privileged --overwrite
-
 # Apply operator files
 
 oc apply -f operators/cert-manager-install.yaml
@@ -88,6 +84,15 @@ oc get pods -A | grep -E 'cert-manager|nmstate|metallb|observability'
 #### 4. Secrets and Service Setup
 
 ```bash
+Install OpenStack Operator and create an instance of the Operator initialization resource. The OpenStack Operator is ready to use when the Status of the openstack instance is Conditions: Ready.
+
+oc new-project openstack
+oc get namespace openstack -ojsonpath='{.metadata.labels}' | jq
+oc label ns openstack security.openshift.io/scc.podSecurityLabelSync=false --overwrite
+oc label ns openstack pod-security.kubernetes.io/enforce=privileged --overwrite
+
+oc project openstack
+
 oc create -f openstack_service_secret.yaml -n openstack
 oc describe secret osp-secret -n openstack
 ```
@@ -108,9 +113,9 @@ oc get nodes -l node-role.kubernetes.io/worker -o jsonpath="{.items[*].metadata.
 # Apply NNCP config
 roso18-openstack-on-openshift/control-plane/networking/
 #oc apply node network configuration policy according to your network
-oc apply -f control-plane/networking/nncp-host-192-168-60-180.yaml
-oc apply -f control-plane/networking/nncp-host-192-168-60-143.yaml
-oc apply -f control-plane/networking/nncp-host-192-168-60-193.yaml
+oc apply -f control-plane/networking/nncp-host-192-168-60-181.yaml
+oc apply -f control-plane/networking/nncp-host-192-168-60-178.yaml
+oc apply -f control-plane/networking/nncp-host-192-168-60-54.yaml
 
 oc get nncp -w
 ```
@@ -167,20 +172,58 @@ oc get pods -n openshift-storage -o wide | grep vg-manager
 #oc apply switch configuration for network generic switch
 oc apply -f control-plane/ngs/ngs_config.yaml
 
+#Commands to view the OpenStackControlPlane CRD definition and specification
+oc describe crd openstackcontrolplane
+oc explain openstackcontrolplane.spec
+
 #oc apply control plane configuration
 oc create -f control-plane/openstack_control_plane.yaml -n openstack
-oc get openstackcontrolplane -n openstack
 oc get openstackcontrolplanes -n openstack
-
-oc get pods -n openstack | grep -i openstackclient
-oc rsh -n openstack openstackclient
 
 #oc apply DNS for baremetal ironic configuration
 oc apply -f control-plane/dnsmasq-dns-ironic.yaml
 
+oc get pods -n openstack | grep -i openstackclient
+oc rsh -n openstack openstackclient
+
 # Inside pod
 openstack endpoint list
 openstack token issue
+```
+
+---
+
+#### 9. (Post-Install) Create Ironic-Provisioning Network & Subnet in OpenStack pod
+
+```bash
+
+oc rsh -n openstack openstackclient
+
+# Create a shared provider network for Ironic provisioning and cleaning traffic
+openstack network create \
+  --provider-network-type vlan \
+  --provider-segment 596 \
+  --provider-physical-network bmnet \
+  --share ironic-provisioning
+
+# Create the Ironic provisioning subnet with DHCP enabled for baremetal PXE and cleaning workflows
+openstack subnet create \
+  --network ironic-provisioning \
+  --subnet-range 172.20.1.0/24 \
+  --ip-version 4 \
+  --gateway 172.20.1.100 \
+  --allocation-pool start=172.20.1.150,end=172.20.1.200 \
+  --dns-nameserver 172.20.1.80 \
+  --dhcp ironic-provisioning-subnet
+
+# Create a router and attach the Ironic provisioning subnet to the router
+openstack router create provisioning-router
+openstack router add subnet provisioning-router ironic-provisioning-subnet
+
+# Reapply control plane (after ironic provisioning network exists)
+Update the Ironic network configuration in openstack_control_plane.yaml by replacing all instances of <ironic_network_uuid>.
+
+oc apply -f control-plane/openstack_control_plane.yaml -n openstack
 ```
 
 ---

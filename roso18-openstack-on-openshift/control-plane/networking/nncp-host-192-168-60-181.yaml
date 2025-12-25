@@ -1,14 +1,14 @@
 apiVersion: nmstate.io/v1
 kind: NodeNetworkConfigurationPolicy
 metadata:
-  name: osp-enp7s0f1np1-host-192-168-60-180
+  name: osp-enp7s0f1np1-host-192-168-60-181
 spec:
   desiredState:
     interfaces:
       - description: internalapi vlan interface
         ipv4:
           address:
-            - ip: 172.17.0.17
+            - ip: 172.17.0.12
               prefix-length: "24"
           enabled: true
           dhcp: false
@@ -22,10 +22,11 @@ spec:
           id: "393"
           reorder-headers: true
 
+    
       - description: tenant vlan interface
         ipv4:
           address:
-            - ip: 172.19.0.10
+            - ip: 172.19.0.17
               prefix-length: "24"
           enabled: true
           dhcp: false
@@ -38,69 +39,6 @@ spec:
           base-iface: enp7s0f1np1
           id: "429"
           reorder-headers: true
-
-      - description: Physical trunk interface for VLANs and bridge
-        name: enp7s0f1np1
-        type: ethernet
-        state: up
-        mtu: 1500
-        ipv4:
-          enabled: false
-        ipv6:
-          enabled: false
-
-      - description: ospbr bridge over enp7s0f1np1 with ctlplane IP
-        name: ospbr
-        type: linux-bridge
-        state: up
-        mtu: 1500
-        bridge:
-          options:
-            stp:
-              enabled: false
-          port:
-            - name: enp7s0f1np1
-              vlan: {}
-        ipv4:
-          address:
-            - ip: 192.168.122.13
-              prefix-length: "24"
-          enabled: true
-          dhcp: false
-        ipv6:
-          enabled: false
-
-      - description: ironic vlan interface
-        ipv4:
-          address:
-            - ip: 172.20.1.17
-              prefix-length: "24"
-          enabled: true
-          dhcp: false
-        ipv6:
-          enabled: false
-        mtu: 1500
-        name: ironic
-        state: up
-        type: vlan
-        vlan:
-          base-iface: ospbr
-          id: "370"
-          reorder-headers: true
-
-      # - description: Configuring enp7s0f1np1
-      #   ipv4:
-      #     address:
-      #       - ip: 192.168.122.13
-      #         prefix-length: "24"
-      #     enabled: true
-      #     dhcp: false
-      #   ipv6:
-      #     enabled: false
-      #   mtu: 1500
-      #   name: enp7s0f1np1
-      #   state: up
-      #   type: ethernet
 
       - description: OBM vlan interface for moc-obm-mgmt
         ipv4:
@@ -117,6 +55,58 @@ spec:
           id: "911"
           reorder-headers: true
 
+      
+      - description: Physical trunk interface for VLANs and bridge
+        name: enp7s0f1np1
+        type: ethernet
+        state: up
+        mtu: 1500
+        ipv4:
+          enabled: false
+        ipv6:
+          enabled: false
+
+
+      - description: ospbr bridge over enp7s0f1np1 with ctlplane IP
+        name: ospbr
+        type: linux-bridge
+        state: up
+        mtu: 1500
+        bridge:
+          options:
+            stp:
+              enabled: false
+          port:
+            - name: enp7s0f1np1
+              vlan: {}
+        ipv4:
+          address:
+            - ip: 192.168.122.14
+              prefix-length: "24"
+          enabled: true
+          dhcp: false
+        ipv6:
+          enabled: false
+
+
+      - description: ironic vlan interface
+        ipv4:
+          address:
+            - ip: 172.20.1.19
+              prefix-length: "24"
+          enabled: true
+          dhcp: false
+        ipv6:
+          enabled: false
+        mtu: 1500
+        name: ironic
+        state: up
+        type: vlan
+        vlan:
+          base-iface: ospbr
+          id: "596"
+          reorder-headers: true
+
   nodeSelector:
-    kubernetes.io/hostname: host-192-168-60-180
+    kubernetes.io/hostname: host-192-168-60-181
     node-role.kubernetes.io/worker: ""

@@ -1,7 +1,7 @@
 apiVersion: nmstate.io/v1
 kind: NodeNetworkConfigurationPolicy
 metadata:
-  name: osp-enp7s0f1np1-host-192-168-60-193
+  name: osp-enp7s0f1np1-host-192-168-60-178
 spec:
   desiredState:
     interfaces:
@@ -22,11 +22,10 @@ spec:
           id: "393"
           reorder-headers: true
 
-
       - description: tenant vlan interface
         ipv4:
           address:
-            - ip: 172.19.0.12
+            - ip: 172.19.0.16
               prefix-length: "24"
           enabled: true
           dhcp: false
@@ -38,6 +37,21 @@ spec:
         vlan:
           base-iface: enp7s0f1np1
           id: "429"
+          reorder-headers: true
+      
+      - description: OBM vlan interface for moc-obm-mgmt
+        ipv4:
+          enabled: true
+          dhcp: true
+        ipv6:
+          enabled: false
+        mtu: 1500
+        name: obm
+        state: up
+        type: vlan
+        vlan:
+          base-iface: enp7s0f1np1
+          id: "911"
           reorder-headers: true
 
       - description: Physical trunk interface for VLANs and bridge
@@ -64,17 +78,17 @@ spec:
               vlan: {}
         ipv4:
           address:
-            - ip: 192.168.122.20
+            - ip: 192.168.122.18
               prefix-length: "24"
           enabled: true
           dhcp: false
         ipv6:
           enabled: false
-
+          
       - description: ironic vlan interface
         ipv4:
           address:
-            - ip: 172.20.1.10
+            - ip: 172.20.1.17
               prefix-length: "24"
           enabled: true
           dhcp: false
@@ -86,38 +100,9 @@ spec:
         type: vlan
         vlan:
           base-iface: ospbr
-          id: "370"
-          reorder-headers: true
-
-      # - description: Configuring enp7s0f1np1
-      #   ipv4:
-      #     address:
-      #       - ip: 192.168.122.20
-      #         prefix-length: "24"
-      #     enabled: true
-      #     dhcp: false
-      #   ipv6:
-      #     enabled: false
-      #   mtu: 1500
-      #   name: enp7s0f1np1
-      #   state: up
-      #   type: ethernet
-
-      - description: OBM vlan interface for moc-obm-mgmt
-        ipv4:
-          enabled: true
-          dhcp: true
-        ipv6:
-          enabled: false
-        mtu: 1500
-        name: obm
-        state: up
-        type: vlan
-        vlan:
-          base-iface: enp7s0f1np1
-          id: "911"
+          id: "596"
           reorder-headers: true
 
   nodeSelector:
-    kubernetes.io/hostname: host-192-168-60-193
+    kubernetes.io/hostname: host-192-168-60-178
     node-role.kubernetes.io/worker: ""

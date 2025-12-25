@@ -13,6 +13,7 @@ stringData:
     device_type = netmiko_dell_force10
     ngs_mac_address = 68:4f:64:1d:01:d5
     ngs_save_configuration = True
+    ngs_manage_vlans = false
     ip = ip address
     username = admin
     password = password
