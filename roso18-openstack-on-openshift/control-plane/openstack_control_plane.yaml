@@ -121,6 +121,7 @@ spec:
       networkAttachments:
         - internalapi
         - moc-obm-mgmt
+        - moc-dev-net
 
   # OVN backend
   ovn:
@@ -214,6 +215,7 @@ spec:
           networkAttachments:
             - ironic
             - moc-obm-mgmt
+            - moc-dev-net
           provisionNetwork: ironic
       ironicInspector:
         replicas: 0

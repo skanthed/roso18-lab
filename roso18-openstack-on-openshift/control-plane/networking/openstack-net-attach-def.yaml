@@ -111,3 +111,20 @@ spec:
         "type": "dhcp"
       }
     }
+---
+apiVersion: k8s.cni.cncf.io/v1
+kind: NetworkAttachmentDefinition
+metadata:
+  name: moc-dev-net
+  namespace: openstack
+spec:
+  config: |
+    {
+      "cniVersion": "0.3.1",
+      "name": "moc-dev-net",
+      "type": "macvlan",
+      "master": "devnet",
+      "ipam": {
+        "type": "dhcp"
+      }
+    }

@@ -56,6 +56,22 @@ spec:
           id: "911"
           reorder-headers: true
 
+      
+      - description: Dev vlan interface for moc-dev-net
+        ipv4:
+          enabled: true
+          dhcp: true
+        ipv6:
+          enabled: false
+        mtu: 1500
+        name: devnet
+        state: up
+        type: vlan
+        vlan:
+          base-iface: enp7s0f1np1
+          id: "914"
+          reorder-headers: true
+
 
       - description: Physical trunk interface for VLANs and bridge
         name: enp7s0f1np1
