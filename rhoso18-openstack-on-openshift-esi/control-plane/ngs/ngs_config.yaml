@@ -20,7 +20,7 @@ stringData:
     secret = password
 
     [genericswitch:MOC-DEV-SW1]
-    device_type = netmiko_cumulus
+    device_type = netmiko_cumulus_nvue
     ngs_mac_address = b0:cf:0e:0f:b9:fd
     ngs_save_configuration = True
     ngs_manage_vlans = false

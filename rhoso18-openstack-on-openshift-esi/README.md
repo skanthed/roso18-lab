@@ -1,4 +1,4 @@
-### ROSO18: OpenStack on OpenShift Deployment using ESI
+### RHOSO18: OpenStack on OpenShift Deployment using ESI
 
 #### Overview
 This documentation provides a **step-by-step reference** for installing OpenStack on OpenShift using the **Elastic Secure Infrastructure (ESI)** and the assisted installer method on a 3-node cluster. It includes setup commands, network configurations, and OpenShift integration.
@@ -111,7 +111,7 @@ To allow the OBM VLAN interface (`moc-obm-mgmt`) to receive an IP via DHCP, add 
 oc get nodes -l node-role.kubernetes.io/worker -o jsonpath="{.items[*].metadata.name}"
 
 # Apply NNCP config
-roso18-openstack-on-openshift/control-plane/networking/
+rhoso18-openstack-on-openshif-esi/control-plane/networking/
 #oc apply node network configuration policy according to your network
 oc apply -f control-plane/networking/nncp-host-192-168-60-181.yaml
 oc apply -f control-plane/networking/nncp-host-192-168-60-178.yaml
