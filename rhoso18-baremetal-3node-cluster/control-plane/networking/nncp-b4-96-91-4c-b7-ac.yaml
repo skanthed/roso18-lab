@@ -1,0 +1,95 @@
+apiVersion: nmstate.io/v1
+kind: NodeNetworkConfigurationPolicy
+metadata:
+  name: nncp-b4-96-91-4c-b7-ac
+spec:
+  desiredState:
+    interfaces:
+      # INTERNAL API (VLAN 20)
+      - description: internalapi vlan interface
+        name: internalapi
+        ipv4:
+          address:
+            - ip: 172.17.0.11
+              prefix-length: 24
+          enabled: true
+          dhcp: false
+        ipv6:
+          enabled: false
+        type: vlan
+        state: up
+        vlan:
+          base-iface: ens2f1
+          id: 20
+          reorder-headers: true
+        
+      # TENANT (VLAN 22)
+      - description: tenant vlan interface
+        name: tenant
+        ipv4:
+          address:
+            - ip: 172.19.0.11
+              prefix-length: 24
+          enabled: true
+          dhcp: false
+        ipv6:
+          enabled: false
+        type: vlan
+        state: up
+        vlan:
+          base-iface: ens2f1
+          id: 22
+          reorder-headers: true
+
+      - description: Physical trunk interface for VLANs and bridge
+        name: ens2f1
+        type: ethernet
+        state: up
+        mtu: 1500
+        ipv4:
+          enabled: false
+        ipv6:
+          enabled: false
+
+      - description: ospbr bridge over ens2f1 with ctlplane IP
+        name: ospbr
+        type: linux-bridge
+        state: up
+        mtu: 1500
+        bridge:
+          options:
+            stp:
+              enabled: false
+          port:
+            - name: ens2f1
+              vlan: {}
+        ipv4:
+          address:
+            - ip: 192.168.122.11
+              prefix-length: "24"
+          enabled: true
+          dhcp: false
+        ipv6:
+          enabled: false
+
+      # IRONIC (VLAN 27)
+      - description: ironic vlan interface
+        name: ironic
+        ipv4:
+          address:
+            - ip: 172.20.1.17
+              prefix-length: 24
+          enabled: true
+          dhcp: false
+        ipv6:
+          enabled: false
+        type: vlan
+        state: up
+        vlan:
+          base-iface: ospbr
+          id: 27
+          reorder-headers: true
+        
+  nodeSelector:
+    kubernetes.io/hostname: b4-96-91-4c-b7-ac
+    node-role.kubernetes.io/worker: ""
