@@ -1,0 +1,25 @@
+apiVersion: image.openshift.io/v1
+kind: ImageStream
+metadata:
+  name: neutron-hotfix
+  namespace: openstack
+spec:
+  lookupPolicy:
+    local: true
+---
+apiVersion: build.openshift.io/v1
+kind: BuildConfig
+metadata:
+  name: neutron-hotfix
+  namespace: openstack
+spec:
+  output:
+    to:
+      kind: ImageStreamTag
+      name: neutron-hotfix:latest
+  source:
+    type: Binary
+  strategy:
+    type: Docker
+  triggers:
+    - type: ConfigChange
