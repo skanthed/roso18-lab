@@ -6,7 +6,7 @@ metadata:
   namespace: openstack
 spec:
   secret: osp-secret
-  storageClass: lvms-local-storage
+  storageClass: lvms-local-storage-osac
 
 # DNS service
   dns:
@@ -56,7 +56,7 @@ spec:
       databaseInstance: openstack
       storage:
         storageRequest: 10G
-        storageClass: lvms-local-storage
+        storageClass: lvms-local-storage-osac
       secret: osp-secret
       keystoneEndpoint: default
       glanceAPIs:
@@ -186,10 +186,10 @@ spec:
           default_network_interface = neutron
 
           [neutron]
-          cleaning_network = 
-          provisioning_network = 
-          inspection_network = 
-          rescuing_network = 
+          cleaning_network = <ironic_network_uuid>
+          provisioning_network = <ironic_network_uuid>
+          inspection_network = <ironic_network_uuid>
+          rescuing_network = <ironic_network_uuid>
         override:
           service:
             internal:
@@ -207,10 +207,10 @@ spec:
             default_network_interface = neutron
 
             [neutron]
-            cleaning_network = 
-            provisioning_network = 
-            inspection_network = 
-            rescuing_network = 
+            cleaning_network = <ironic_network_uuid>
+            provisioning_network = <ironic_network_uuid>
+            inspection_network = <ironic_network_uuid>
+            rescuing_network = <ironic_network_uuid>
           storageRequest: 10G
           networkAttachments:
             - ironic

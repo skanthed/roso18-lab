@@ -9,7 +9,7 @@ stringData:
     [ngs]
     session_log_file = /var/log/neutron/ngs.log
 
-    [genericswitch:dell-hostname-oct4]
+    [genericswitch:dell-switch]
     device_type = netmiko_dell_force10
     ngs_mac_address = 68:4f:64:1d:01:d5
     ngs_save_configuration = True
