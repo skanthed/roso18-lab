@@ -34,13 +34,11 @@ These switches are used to validate Layer 2 connectivity, MAC address learning, 
 ### 3. Network Configuration
 
 VLAN
-
-All nodes are connected to the same VLAN: VLAN 914. This ensures Layer 2 communication across all nodes, which is required for OpenShift installation.
+- All nodes are connected to the same VLAN: VLAN 914. This ensures Layer 2 communication across all nodes, which is required for OpenShift installation.
 
 
 Node Connectivity Validation
-
-From the jump host, verify connectivity to all cluster nodes: ping other nodes and successful responses confirm network reachability.
+- From the jump host, verify connectivity to all cluster nodes: ping other nodes and successful responses confirm network reachability.
 
 
 ### 4. Switch Validation
@@ -50,7 +48,7 @@ On the Cumulus switch, validate connectivity:
     bridge link show
     net show mac
 
-Validate:
+Validate
 - Node MAC addresses are visible, Interfaces are mapped correctly, and Switch ports are active.
 
 
@@ -58,7 +56,8 @@ Validate:
 
 Register System with Red Hat Subscription
 
-The system was registered to enable package installation and updates:
+The system was registered to enable package installation and updates
+    
     sudo subscription-manager register
 
 System Update and Install dnsmasq
@@ -96,6 +95,7 @@ Restart services
 Problem:
 - Multiple active interfaces on nodes cause routing conflicts
 - This impacts node discovery in Assisted Installer
+
 Fix (on each node):
 
     sudo nmcli device disconnect <secondary-interface-name>
@@ -119,7 +119,8 @@ Edit /etc/hosts on your local machine:
 
     sudo nano /etc/hosts
 
-Add entries which might look like:
+Add entries which might look like
+
     <api-ip> api.osac.lab.massopen.cloud.com
     <ingress-ip> console-openshift-console.apps.osac.lab.massopen.cloud.com
     <ingress-ip> oauth-openshift.apps.osac.lab.massopen.cloud.com
