@@ -1,0 +1,36 @@
+# ---------------------------------------------------------------
+# Binaries — extracted at runtime by 01_extract_installer.sh
+# ---------------------------------------------------------------
+bin/oc
+bin/kubectl
+bin/openshift-baremetal-install
+
+# Downloaded client tarballs
+*.tar.gz
+
+# ---------------------------------------------------------------
+# Cluster install state — generated at runtime by 02_run_installation.sh
+# Contains kubeconfig, kubeadmin-password, TLS private keys, and install logs.
+# Add your cluster name here (must match CLUSTER_NAME in 02_run_installation.sh).
+# ---------------------------------------------------------------
+<CLUSTER_NAME>/
+
+# ---------------------------------------------------------------
+# Working install-config — regenerated from the template before each run.
+# The template (install-config-template.yaml) is committed; this copy is not.
+# ---------------------------------------------------------------
+assets/install-config.yaml
+assets/install-config-backup.yaml
+
+# ---------------------------------------------------------------
+# Pull secret — contains live registry credentials.
+# Populate assets/pull_secret.json locally from console.redhat.com.
+# Never commit the real file.
+# ---------------------------------------------------------------
+assets/pull_secret.json
+
+# ---------------------------------------------------------------
+# Scratch space
+# ---------------------------------------------------------------
+temp/*
+!temp/.gitkeep
