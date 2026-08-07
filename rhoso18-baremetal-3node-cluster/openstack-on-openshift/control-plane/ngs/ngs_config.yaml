@@ -1,0 +1,32 @@
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: neutron-switch-config
+  namespace: openstack
+stringData:
+  03-ml2-genericswitch.conf: |
+    [ngs]
+    session_log_file = /var/log/neutron/ngs.log
+
+    [genericswitch:dell-switch]
+    device_type = netmiko_dell_force10
+    ngs_mac_address = 68:4f:64:1d:01:d5
+    ngs_save_configuration = True
+    ngs_manage_vlans = false
+    ip = ip address
+    username = admin
+    password = password
+    secret = password
+
+    [genericswitch:MOC-DEV-SW1]
+    device_type = netmiko_cumulus_nvue
+    ngs_mac_address = b0:cf:0e:0f:b9:fd
+    ngs_save_configuration = True
+    ngs_manage_vlans = false
+    ip = ip address
+    username = admin
+    password = password
+    secret = password
+
+type: Opaque

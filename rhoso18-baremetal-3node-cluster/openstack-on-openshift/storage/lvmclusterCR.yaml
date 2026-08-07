@@ -1,0 +1,42 @@
+apiVersion: lvm.topolvm.io/v1alpha1
+kind: LVMCluster
+metadata:
+  name: my-lvmcluster
+  namespace: openshift-storage
+spec:
+  storage:
+    deviceClasses:
+      - name: vg1-sdb
+        default: true
+        fstype: xfs
+        nodeSelector:
+          matchLabels:
+            lvm: enabled-sdb #apply label to node based on the available disk
+        deviceSelector:
+          paths:
+            - /dev/sdb #reboot this can change the drive, mention something persistent
+        thinPoolConfig:
+          name: thin-pool-1
+          sizePercent: 90
+          overprovisionRatio: 10
+          chunkSize: 128Ki
+          chunkSizeCalculationPolicy: Static
+          metadataSize: 1Gi
+          metadataSizeCalculationPolicy: Host
+
+      - name: vg1-sda
+        fstype: xfs
+        nodeSelector:
+          matchLabels:
+            lvm: enabled-sda #apply label to node based on the available disk
+        deviceSelector:
+          paths:
+            - /dev/sda #reboot this can change the drive, mention something persistent
+        thinPoolConfig:
+          name: thin-pool-2
+          sizePercent: 90
+          overprovisionRatio: 10
+          chunkSize: 128Ki
+          chunkSizeCalculationPolicy: Static
+          metadataSize: 1Gi
+          metadataSizeCalculationPolicy: Host
